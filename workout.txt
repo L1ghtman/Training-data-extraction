@@ -328,7 +328,7 @@ Kabelturm butterfly oben 10x20, 10x25, 15x17.5
 23.05
 Military press 15x20, 10x30, 5x35, 10x27.5, 10x25
 Dumbbell overhead press 10x14, 10x16, 10x16, 4x22
-Kabelturm 10x10, 10x10, 15x7.5, 12x8.25
+Kabelturm seitheben 10x10, 10x10, 15x7.5, 12x8.25
 
 24.05
 Pull up 3.5, 2.5, 3, 2.5
@@ -417,3 +417,38 @@ Dumbbell bench press 10x16, 10x20, 10x22, 8x22
 Kabelturm butterfly unten 10x15, 10x15, 10x15
 Kabelturm butterfly oben 10x20, 10x25, 10x25
 Folter maschine 10x10, 10x10
+
+13.06
+Pull up 2.5, 2
+Band assisted pull up 5, 5, 5
+Deadlift 10x60, 10x80, 6x110, 2x120
+Lat pull down 12x50, 8x65, 10x60, 6x70+8x55+10x40
+Ruder maschine 10x30, 10x30, 10x35
+Kabelturm rudern breit 12x35, 12x40, 12x45
+Reverse butterfly 10x40
+
+16.06
+Squat 10x50, 8x60, 10x60, 10x60, 10x60
+Split squat 10x18, 10x24, 10x24
+Leg press 10x117, 10x141, 12x149
+Adduktor 10x65, 10x85, 0.5x105, 0.5x95
+
+17.06
+Bench press 10x40, 8x50, 6x60, 8x60, 10x50
+Incline dumbbell bench press 10x14, 10x18, 10x22
+Cable fly low to high 10x15, 10x15, 6x20
+Cable fly high to low 10x20, 10x25+10x20,
+Folter Maschine 10x10, 9x15
+
+18.06
+Military press 10x20, 10x30, 8x35, 8x35
+Dumbbell shoulder press 10x14, 10x18, 10x20, 10x20
+Cable lateral raise 10x10, 8x12.5, 10x10, 10x10+8x7.5+10x5
+Shoulder press machine 10x35
+
+23.06
+Pull up 5, 3, 6, 5
+Deadlift 10x60, 8x90, 4x110, 4x120, 8x100
+Lat pull down 15x45, 10x60, 10x60, 10x55, 6x70+8x50+10x35
+Kabelturm rudern breit 10x40, 10x40, 10x40
+Ruder maschine 12x30, 10x40, 10x40
