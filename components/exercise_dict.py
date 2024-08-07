@@ -1,3 +1,6 @@
+import pandas as pd
+# from components.exercise_dict import *
+# from components.helpers import insert_exercise_to_db
 
 # Dictionary containing look up guide for exercise names
 Exercise_dict = {

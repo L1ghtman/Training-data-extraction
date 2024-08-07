@@ -127,10 +127,29 @@ def insert_workout_to_db(Workout):
                 cursor.execute('''INSERT INTO workout_data (date, workout, exercise, set_number, weight, repetitions, notes) VALUES (?,?,?,?,?,?,?)''', (Workout.date, Workout.name, ex.name, set_num, set.weight, set.reps, ex.notes))
             else:
                 drop_set_num = 1
+                i = 0
                 for drop_set in set.drop_reps:
-                    cursor.execute('''INSERT INTO workout_data (date, workout, exercise, set_number, weight, repetitions, notes) VALUES (?,?,?,?,?,?,?)''', (Workout.date, Workout.name, ex.name, set_num + drop_set_num * 0.1, set.drop_weight, set.drop_reps, ex.notes))
+                    cursor.execute('''INSERT INTO workout_data (date, workout, exercise, set_number, weight, repetitions, notes) VALUES (?,?,?,?,?,?,?)''', (Workout.date, Workout.name, ex.name, set_num + drop_set_num * 0.1, set.drop_weights[i], set.drop_reps[i], ex.notes))
                     drop_set_num += 1
+                    i += 1
             set_num += 1
     
     conn.commit()
     conn.close()
+
+def insert_exercise_to_db(exercise_info, i):
+    # Create database access point
+    conn = sqlite3.connect('workout_data.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''INSERT INTO exercise_data (exercise_id, exercise, target, synergists, stabilizers, antagonist_stabilizers, dynamic_stabilizers) VALUES (?,?,?,?,?,?,?)''', (i, exercise_info[0], exercise_info[1], exercise_info[2], exercise_info[3], exercise_info[4], exercise_info[5]))
+
+    conn.commit()
+    conn.close()
+
+# Extract exercises from spreadsheet with 'official' names and involved muscles, and insert them into dedicated database
+def extract_exercises(exercise_csv):
+    df = pd.read_csv(exercise_csv)
+    for i in range(len(df)):
+        exercise_info = [df['Exercise'][i], df['Target'][i], df['Synergists'][i], df['Stabilizers'][i], df['Antagonist Stabilizers'][i], df['Dynamic Stabilizers'][i]]
+        insert_exercise_to_db(exercise_info, i)
