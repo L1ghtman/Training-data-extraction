@@ -30,3 +30,5 @@ class Set:
         self.drop_reps = drop_reps
         self.drop_weights = drop_weight
         self.time = time
+
+
