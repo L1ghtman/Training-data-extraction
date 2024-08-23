@@ -3,27 +3,42 @@
 
 #include <string>
 #include <vector>
+#include "common_types.h"
+
+using cType::RepVal;
 
 class Set {
     public:
-        Set(int reps = 0,
-            int drop_reps = 0,
+        Set(RepVal reps = 0,
+            RepVal drop_reps = 0,
             double weight = 0.0,
             double drop_weight = 0.0,
-            int time = 0);
+            std::string time = 0);
+
+        static Set withTime(std::string time) {
+            return Set(0, 0, 0.0, 0.0, time);
+        }
+
+        static Set normal_set(RepVal reps, double weight) {
+            return Set(reps, 0, weight, 0.0, 0);
+        }
+
+        static Set drop_set(RepVal reps, double weight) {
+            return Set(0, reps, 0.0, weight, 0);
+        }
     
     private:
-        int reps;
-        int drop_reps;
+        RepVal reps;
+        RepVal drop_reps;
         double weight;
-        double drop_reps;
-        int time;
+        double drop_weight;
+        std::string time;
 };
 
 class Exercise {
     public:
         Exercise(const std::string& name = "",
-                const std::vector<Set>& sets = {},
+                const std::vector<Set> sets = std::vector<Set>(),
                 const std::string& notes = "");
     
     private:
@@ -34,7 +49,7 @@ class Exercise {
 
 class Workout {
     public:
-        Workout(const std::vector<Exercise>& exercises = {},
+        Workout(const std::vector<Exercise> exercises = std::vector<Exercise>(),
                 const std::string& date = "",
                 const std::string& name = "");
 

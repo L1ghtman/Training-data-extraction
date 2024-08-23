@@ -5,16 +5,76 @@
 #include <set>
 #include <tuple>
 #include <sqlite3.h>
+#include <sstream>
 
+#include "common_types.h"
 #include "helpers.h"
 #include "workout_data_structs.h"
 
+using cType::StringVector;
+
 bool has_digit(const std::string& string) {
     for (const char &ch: string) {
-        int ascii_val = (int) ch;
-        if (48 <= ascii_val && ascii_val <= 57) {
+        if (std::isdigit(ch)) {
             return true;
         }
     }
     return false;
+}
+
+StringVector split_string(std::string& string, char delimiter) {
+    std::stringstream ss(string);
+    std::string segment;
+    StringVector seglist;
+
+    while (std::getline(ss, segment, delimiter)) {
+        seglist.push_back(segment);
+    }
+    return seglist;
+}
+
+bool contains_char(std::string str, char c) {
+    if (str.find(c)!=std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
+Set get_set(std::string& string) {
+    string.pop_back();
+    if (contains_char(string, 's')) {
+        return Set::withTime(string);
+    }
+    
+    StringVector set = split_string(string, 'x');
+    
+    if (set.size() == 1) {
+        set.push_back("0");
+    }
+    
+    if (!contains_char(set[0], '.') && !contains_char(set[1], '.')) {
+        return Set::normal_set(stoi(set[0]), stoi(set[1]));
+    }
+    if (!contains_char(set[0], '.') && contains_char(set[1], '.')) {
+        return Set::normal_set(stoi(set[0]), std::stof(set[1]));
+    }
+    if (contains_char(set[0], '.') && !contains_char(set[1], '.')) {
+        return Set::normal_set(std::stof(set[0]), stoi(set[1]));
+    }
+    if (contains_char(set[0], '.') && contains_char(set[1], '.')) {
+        return Set::normal_set(std::stof(set[0]), std::stof(set[1]));
+    }
+}
+
+Set get_drop_set(std::string& string) {
+    string.pop_back();
+    StringVector sets = split_string(string, '+');
+    StringVector reps = std::vector<std::string>();
+    StringVector weights = std::vector<std::string>();
+    for (auto& s : sets) {
+        StringVector set_data = split_string(s, 'x');
+        if (contains_char(set_data[1], '.')) {
+            reps.push_back(stoi(set_data[0]));
+        }
+    }
 }
