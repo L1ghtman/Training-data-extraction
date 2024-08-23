@@ -12,6 +12,9 @@
 #include "workout_data_structs.h"
 
 using cType::StringVector;
+using cType::StringVector;
+using cType::RVVector;
+using cType::DoubleVector;
 
 bool has_digit(const std::string& string) {
     for (const char &ch: string) {
@@ -69,12 +72,18 @@ Set get_set(std::string& string) {
 Set get_drop_set(std::string& string) {
     string.pop_back();
     StringVector sets = split_string(string, '+');
-    StringVector reps = std::vector<std::string>();
-    StringVector weights = std::vector<std::string>();
+    RVVector reps = RVVector();
+    DoubleVector weights = DoubleVector();
     for (auto& s : sets) {
         StringVector set_data = split_string(s, 'x');
-        if (contains_char(set_data[1], '.')) {
+        if (contains_char(set_data[0], '.')) {
+            reps.push_back(std::stof(set_data[0]));
+            weights.push_back(std::stof(set_data[1]));
+        }
+        else {
             reps.push_back(stoi(set_data[0]));
+            weights.push_back(std::stof(set_data[1]));
         }
     }
+    return Set::drop_set(reps, weights);
 }

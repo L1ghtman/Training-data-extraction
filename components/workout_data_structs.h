@@ -6,24 +6,26 @@
 #include "common_types.h"
 
 using cType::RepVal;
+using cType::RVVector;
+using cType::DoubleVector;
 
 class Set {
     public:
         Set(RepVal reps = 0,
-            RepVal drop_reps = 0,
+            RVVector drop_reps = RVVector(),
             double weight = 0.0,
-            double drop_weight = 0.0,
+            DoubleVector drop_weight = DoubleVector(),
             std::string time = 0);
 
         static Set withTime(std::string time) {
-            return Set(0, 0, 0.0, 0.0, time);
+            return Set(0, RVVector(), 0.0, DoubleVector(), time);
         }
 
         static Set normal_set(RepVal reps, double weight) {
-            return Set(reps, 0, weight, 0.0, 0);
+            return Set(reps, RVVector(), weight, DoubleVector(), 0);
         }
 
-        static Set drop_set(RepVal reps, double weight) {
+        static Set drop_set(RVVector reps, DoubleVector weight) {
             return Set(0, reps, 0.0, weight, 0);
         }
     
