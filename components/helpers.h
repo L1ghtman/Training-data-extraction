@@ -9,9 +9,12 @@
 #include <set>
 #include "workout_data_structs.h"
 
+using cType::StringVector;
+
 bool has_digit(const std::string& string);
 std::vector<std::string> split_string(std::string& string, char delimiter);
 bool contains_char(std::string str, char c);
+StringVector split(std::string& str, std::string& delim);
 Set get_set(const std::string& string);
 Set get_drop_set(const std::string& string);
 std::tuple<std::string, std::string> separate_notes(const std::string& string);

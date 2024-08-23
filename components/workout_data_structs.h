@@ -31,9 +31,9 @@ class Set {
     
     private:
         RepVal reps;
-        RepVal drop_reps;
+        RVVector drop_reps;
         double weight;
-        double drop_weight;
+        DoubleVector drop_weight;
         std::string time;
 };
 

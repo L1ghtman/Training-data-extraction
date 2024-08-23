@@ -36,6 +36,19 @@ StringVector split_string(std::string& string, char delimiter) {
     return seglist;
 }
 
+StringVector split(std::string& string, std::string& delim) {
+    StringVector tokens;
+    size_t pos = 0;
+    std::string token;
+    while ((pos = string.find(delim)) != std::string::npos) {
+        token = string.substr(0, pos);
+        tokens.push_back(token);
+        string.erase(0, pos + delim.length());
+    }
+    tokens.push_back(string);
+    return tokens;
+}
+
 bool contains_char(std::string str, char c) {
     if (str.find(c)!=std::string::npos) {
         return true;
@@ -86,4 +99,9 @@ Set get_drop_set(std::string& string) {
         }
     }
     return Set::drop_set(reps, weights);
+}
+
+std::tuple<std::string, std::string> separate_notes(std::string& string) {
+    // if (contains_char(string, ''))
+    
 }

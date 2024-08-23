@@ -36,4 +36,11 @@ int main() {
     for (const auto& str : split_test) {
         std::cout << str << std::endl;
     }
+
+    std::string test = "This is (a), test(hello) (test)";
+    std::string delim = " (";
+    for (const auto& str : split(test, delim)) {
+        std::cout << str << std::endl;
+    }
+
 }

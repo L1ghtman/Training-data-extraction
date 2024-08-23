@@ -2,13 +2,14 @@
 #include "common_types.h"
 
 using cType::RepVal;
+using cType::RVVector;
+using cType::DoubleVector;
 
-Set::Set(
-    RepVal reps, 
-    RepVal drop_reps,
-    double weight, 
-    double drop_weight,
-    std::string time):
+Set::Set(RepVal reps, 
+        RVVector drop_reps, 
+        double weight, 
+        DoubleVector drop_weight, 
+        std::string time):
         reps(reps),
         drop_reps(drop_reps),
         weight(weight),
