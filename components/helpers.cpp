@@ -56,6 +56,13 @@ bool contains_char(std::string str, char c) {
     return false;
 }
 
+bool contains_str(std::string& str, std::string& delim) {
+    if (str.find(delim)!=std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
 Set get_set(std::string& string) {
     string.pop_back();
     if (contains_char(string, 's')) {
@@ -102,6 +109,15 @@ Set get_drop_set(std::string& string) {
 }
 
 std::tuple<std::string, std::string> separate_notes(std::string& string) {
-    // if (contains_char(string, ''))
-    
+    std::string delim = " (";
+    if (contains_str(string, delim)) {
+        StringVector set_and_notes = split(string, delim);
+        std::string set = set_and_notes[0];
+        set_and_notes[1].pop_back();
+        std::string notes = set_and_notes[1];
+        return std::make_tuple(set, notes);
+    }    
+    else {
+        return std::make_tuple(string, "");
+    } 
 }
