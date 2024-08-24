@@ -28,7 +28,14 @@ class Set {
         static Set drop_set(RVVector reps, DoubleVector weight) {
             return Set(0, reps, 0.0, weight, 0);
         }
+
+    RepVal get_reps() const { return reps; }
+    RVVector get_drop_reps() const { return drop_reps; }
+    double get_weight() const { return weight; }
+    DoubleVector get_drop_weight() const { return drop_weight; }
+    std::string get_time() const { return time; }
     
+
     private:
         RepVal reps;
         RVVector drop_reps;
@@ -42,6 +49,10 @@ class Exercise {
         Exercise(const std::string& name = "",
                 const std::vector<Set> sets = std::vector<Set>(),
                 const std::string& notes = "");
+
+        std::string get_name() const { return name; }
+        std::vector<Set> get_sets() const { return sets; }
+        std::string get_notes() const { return notes; }
     
     private:
         std::string name;
@@ -54,6 +65,10 @@ class Workout {
         Workout(const std::vector<Exercise> exercises = std::vector<Exercise>(),
                 const std::string& date = "",
                 const std::string& name = "");
+        
+        std::vector<Exercise> get_exercises() const { return exercises; }
+        std::string get_date() const { return date; }
+        std::string get_name() const { return name; }
 
     private:
         std::vector<Exercise> exercises;

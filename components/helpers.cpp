@@ -6,6 +6,7 @@
 #include <tuple>
 #include <sqlite3.h>
 #include <sstream>
+#include <variant>
 
 #include "common_types.h"
 #include "helpers.h"
@@ -120,4 +121,30 @@ std::tuple<std::string, std::string> separate_notes(std::string& string) {
     else {
         return std::make_tuple(string, "");
     } 
+}
+
+void print_workout(Workout w) {
+    std::string date = w.get_date();
+    std::cout << "######################################" << std::endl;
+    std::cout << "DATE:     " << date << std::endl;
+    for (const auto& exercise : w.get_exercises()) {
+        std::cout << "-------------------------------" << std::endl;
+        bool first = true;
+        std::string set_string = "";
+        for (const auto& s : exercise.get_sets()) {
+            RepVal reps = s.get_reps();
+            double weight = s.get_weight();
+            if (cType::is_non_zero(reps) && cType::is_non_zero(weight)) {
+                if (first) {
+                    set_string += cType::to_string(reps) + "x" + cType::to_string(weight);
+                    first = false; 
+                }
+                else {
+                    set_string += ", " + cType::to_string(reps) + "x" + cType::to_string(weight);
+                }
+            }
+        }
+        std::cout << set_string << std::endl;
+    }
+    std::cout << "######################################" << std::endl;
 }
