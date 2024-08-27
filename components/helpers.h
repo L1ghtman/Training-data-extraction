@@ -12,9 +12,9 @@
 using cType::StringVector;
 
 bool has_digit(const std::string& string);
-std::vector<std::string> split_string(std::string& string, char delimiter);
-bool contains_char(std::string str, char c);
-bool contains_str(std::string str, std::string delim);
+std::vector<std::string> split_string(std::string& string, char& delimiter);
+bool contains_char(std::string& str, char& c);
+bool contains_str(std::string& str, std::string& delim);
 StringVector split(std::string& str, std::string& delim);
 Set get_set(const std::string& string);
 Set get_drop_set(const std::string& string);

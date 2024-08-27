@@ -8,6 +8,8 @@
 #include "common_types.h"
 #include "helpers.h"
 
+std::regex date_pattern("\d{2}\.\d{2}");
+
 StringVector read_and_clean_workout_data(std::string path) {
     std::fstream input_file(path);
     StringVector workouts;
@@ -21,7 +23,8 @@ StringVector read_and_clean_workout_data(std::string path) {
         workouts = split(workout_data, delim);
         auto it = workouts.begin();
         while (it != workouts.end()) {
-            if (!contains_str(*it, "\n")) {
+            std::string delim = "\n";
+            if (!contains_str(*it, delim)) {
                 it = workouts.erase(it);
             }
             else {
@@ -33,4 +36,43 @@ StringVector read_and_clean_workout_data(std::string path) {
         std::cerr << "Unable to open file" << std::endl;
     }
     return workouts;
+}
+
+Exercise get_exercise_from_str(std::string& string) {
+    char delim = ' ';
+    StringVector sets_str = split_string(string, delim);
+    for (auto& s : sets_str) {
+        if (!has_digit(s)) {
+            
+        }
+    }
+}
+
+std::vector<Workout> import_workout_data(StringVector workouts) {
+    StringVector exercises;
+    std::vector<StringVector> pre_processing_workout_list;
+    for (auto& workout : workouts) {
+        char delim = '\n';
+        exercises = split_string(workout, delim);
+        pre_processing_workout_list.push_back(exercises);
+    }
+
+    for (auto& workout : pre_processing_workout_list) {
+        std::string date = "";
+        std::vector<Exercise> exercise_list = std::vector<Exercise>();
+        for (auto& exercise : workout) {
+            std::string name = "";
+            std::vector<Set> sets = std::vector<Set>();
+            std::tuple<std::string, std::string> set_and_notes = separate_notes(exercise);
+            std::string cleaned = std::get<0>(set_and_notes);
+            std::string notes = std::get<1>(set_and_notes);
+            if (std::regex_search(cleaned ,date_pattern)) {
+                date = cleaned;
+                continue;
+            }
+            Exercise ex = get_exercise_from_str(cleaned);
+            exercise_list.push_back()
+        }
+    }
+
 }
