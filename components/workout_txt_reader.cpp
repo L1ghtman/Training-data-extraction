@@ -39,11 +39,25 @@ StringVector read_and_clean_workout_data(std::string path) {
 }
 
 Exercise get_exercise_from_str(std::string& string) {
+    std::string name = "";
     char delim = ' ';
     StringVector sets_str = split_string(string, delim);
+    std::vector<Set> sets = std::vector<Set>();
     for (auto& s : sets_str) {
         if (!has_digit(s)) {
-            
+            name += s + ' '; 
+        }
+        else {
+            char c = '(';
+            if (contains_char(s, c)) {
+                s.erase(std::remove(s.begin(), s.end(), c), s.end());
+                std::string delim = "x";
+                StringVector multi_set = split(s, delim);
+                for (int i = 0; i < stoi(multi_set[0]); i++) {
+                    sets.push_back(Set::normal_set(stoi(multi_set[1]), stod(multi_set[2])));
+                }
+                continue;
+            }
         }
     }
 }
@@ -61,8 +75,7 @@ std::vector<Workout> import_workout_data(StringVector workouts) {
         std::string date = "";
         std::vector<Exercise> exercise_list = std::vector<Exercise>();
         for (auto& exercise : workout) {
-            std::string name = "";
-            std::vector<Set> sets = std::vector<Set>();
+            // std::string name = "";
             std::tuple<std::string, std::string> set_and_notes = separate_notes(exercise);
             std::string cleaned = std::get<0>(set_and_notes);
             std::string notes = std::get<1>(set_and_notes);
