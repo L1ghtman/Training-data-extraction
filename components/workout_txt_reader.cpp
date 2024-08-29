@@ -38,7 +38,7 @@ StringVector read_and_clean_workout_data(std::string path) {
     return workouts;
 }
 
-Exercise get_exercise_from_str(std::string& string) {
+Exercise get_exercise_from_str(std::string& string, std::string& notes) {
     std::string name = "";
     char delim = ' ';
     StringVector sets_str = split_string(string, delim);
@@ -58,13 +58,24 @@ Exercise get_exercise_from_str(std::string& string) {
                 }
                 continue;
             }
+            char plus = '+';
+            if (contains_char(s, plus)) {
+                sets.push_back(get_drop_set(s));
+                continue;
+            }
+            else {
+                sets.push_back(get_set(s));
+            }
         }
     }
+    Exercise exercise(name, sets, notes);
+    return exercise;
 }
 
 std::vector<Workout> import_workout_data(StringVector workouts) {
     StringVector exercises;
     std::vector<StringVector> pre_processing_workout_list;
+    std::vector<Workout> workout_list;
     for (auto& workout : workouts) {
         char delim = '\n';
         exercises = split_string(workout, delim);
@@ -83,9 +94,11 @@ std::vector<Workout> import_workout_data(StringVector workouts) {
                 date = cleaned;
                 continue;
             }
-            Exercise ex = get_exercise_from_str(cleaned);
-            exercise_list.push_back()
+            Exercise ex = get_exercise_from_str(cleaned, notes);
+            exercise_list.push_back(ex);
         }
+        Workout wo(exercise_list, date);// TODO: name workouts based on primary muscle group focus (advanced feature)
+        workout_list.push_back(wo);
     }
-
+    return workout_list;
 }
