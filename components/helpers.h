@@ -25,5 +25,7 @@ std::set<std::string> compare_DB_to_Dict();   // TODO: figure out if this is nec
 void insert_workout_to_db(Workout);
 void insert_exercise_to_db(std::vector<std::string> exercise_info, int i);
 void extract_exercises();                     // TODO: figure out if this is necessary at all
+std::vector<StringVector> readCSV(std::string& filename);
+void writeCSV(std::string& filename, std::vector<StringVector>& data)
 
 #endif // HELPERS_H
