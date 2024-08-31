@@ -176,3 +176,9 @@ void writeCSV(const std::string& filename, std::vector<StringVector>& data) {
     }
 }
 
+
+void add_row_to_csv(std::string& filename, StringVector row) {
+    std::vector<StringVector> csv_data = readCSV(filename);
+    csv_data.push_back(row);
+    writeCSV(filename, csv_data);
+}
