@@ -11,6 +11,7 @@
 #include "common_types.h"
 #include "helpers.h"
 #include "workout_data_structs.h"
+#include "exercise_dict.h"
 
 using cType::StringVector;
 using cType::StringVector;
@@ -176,9 +177,32 @@ void writeCSV(const std::string& filename, std::vector<StringVector>& data) {
     }
 }
 
-
 void add_row_to_csv(std::string& filename, StringVector row) {
     std::vector<StringVector> csv_data = readCSV(filename);
     csv_data.push_back(row);
     writeCSV(filename, csv_data);
+}
+
+StringVector get_exercise_names(std::vector<Workout> workout_list) {
+    StringVector exercise_name_list;
+    for (const auto& wo : workout_list) {
+        for (const auto& exercise : wo.get_exercises()) {
+            exercise_name_list.push_back(exercise.get_name());         
+        }
+    }
+    return exercise_name_list;
+}
+
+StringVector make_unique(StringVector vector) {
+    std::set<std::string> s;
+    size_t size = vector.size();
+    for (size_t i = 0; i < size; i++) s.insert(vector[i]);
+    vector.assign(s.begin(), s.end());
+    return vector;
+}
+
+StringVector check_dict_completeness(std::vector<Workout> workout_list) {
+    StringVector exercise_name_list = make_unique(get_exercise_names(workout_list));
+    std::vector<std::string> keys;
+    keys.reserve(exercise_dict.size());
 }
