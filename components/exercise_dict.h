@@ -13,8 +13,22 @@ class ExerciseDict {
             std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return std::tolower(c); });
             return s;
         }
-        
+
     public:
+        class const_iterator {
+            private:
+                std::unordered_map<std::string, std::string>::const_iterator it;
+            public:
+                const_iterator(std::unordered_map<std::string, std::string>::const_iterator it) : it(it) {}
+                const std::pair<const std::string, std::string>& operator*() const { return *it; }
+                const std::pair<const std::string, std::string>* operator->() const { return &(*it); }
+                const_iterator& operator++() {++it; return *this; }
+                bool operator!=(const const_iterator& other) const { return it != other.it; }
+        };
+
+        const_iterator begin() const { return const_iterator(exercise_dict.begin()); }
+        const_iterator end() const { return const_iterator(exercise_dict.end()); }
+
         std::string lookup(const std::string& exercise_name) const;
 
         // Delete copy constructor and assingment operator to guarantee single instance system wide

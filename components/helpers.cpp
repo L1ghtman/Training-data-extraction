@@ -212,3 +212,35 @@ StringVector check_dict_completeness(std::vector<Workout> workout_list) {
     }
     return missing_exercises;
 }
+
+// Compare the exercise names of the internal dictonary with the external source of official names. Currently this is a csv file, but will be upgraded to separate database.
+StringVector comp_extDb_to_exDict(const std::string& filename) {
+
+    std::vector<StringVector> external_data = readCSV(filename);
+    StringVector external_names = StringVector();
+    StringVector official_names = StringVector();
+
+    // Get exercise names from the external csv 
+    bool first = true;
+    int name_index;
+    for (const auto line : external_data) {
+        if (first) {
+            first = false;
+            name_index = 0;
+            for (const auto row : line) {
+                if (row == "Exercise") {
+                    break;
+                }
+                name_index++;
+            }
+        }
+        external_names.push_back(line[name_index]); 
+    }
+
+    StringVector values;
+    values.reserve(ExerciseDict::get_instance().size());
+    for (const auto& val : ExerciseDict::get_instance()) {
+        values.push_back(val.second());
+    }
+
+}
