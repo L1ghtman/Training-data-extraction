@@ -136,6 +136,7 @@ class ExerciseDict {
     public:
         std::string lookup(const std::string& exercise_name) const;
 
+        // Delete copy constructor and assingment operator to guarantee single instance system wide
         ExerciseDict(const ExerciseDict&) = delete;
         ExerciseDict& operator=(const ExerciseDict&) = delete;
 
@@ -154,7 +155,23 @@ class ExerciseDict {
                 return it->second;
             }
             throw std::out_of_range("Key not found in exercise_dict.");
+        }
+
+        bool contains(const std::string& key) const {
+            return exercise_dict.find(key) != exercise_dict.end();
         } 
+
+        void remove(const std::string& key) {
+            exercise_dict.erase(key);
+        }
+
+        void clear() {
+            exercise_dict.clear();
+        }
+
+        size_t size() {
+            return exercise_dict.size();
+        }
 };
 
 #endif // EXERCISE_DICT_H
