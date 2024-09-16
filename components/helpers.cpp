@@ -203,6 +203,11 @@ StringVector make_unique(StringVector vector) {
 
 StringVector check_dict_completeness(std::vector<Workout> workout_list) {
     StringVector exercise_name_list = make_unique(get_exercise_names(workout_list));
-    std::vector<std::string> keys;
-    keys.reserve(exercise_dict.size());
+    ExerciseDict& exercise_dict = ExerciseDict::get_instance();
+    StringVector missing_exercises = StringVector();
+    for (auto name : exercise_name_list) {
+        if (!exercise_dict.contains(name)) {
+            missing_exercises.push_back(name);
+        }
+    }
 }
