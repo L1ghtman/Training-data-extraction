@@ -210,4 +210,5 @@ StringVector check_dict_completeness(std::vector<Workout> workout_list) {
             missing_exercises.push_back(name);
         }
     }
+    return missing_exercises;
 }
