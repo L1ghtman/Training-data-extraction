@@ -4,50 +4,137 @@
 #include <unordered_map>
 #include <string>
 
-class ExerciseDict {
-    private:
-        std::unordered_map<std::string, std::string> exercise_dict;   
-        ExerciseDict(); 
-
-        static std::string to_lower(std::string s) {
+static std::string to_lower(std::string s) {
             std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return std::tolower(c); });
             return s;
-        }
+}
 
-    public:
-        class const_iterator {
-            private:
-                std::unordered_map<std::string, std::string>::const_iterator it;
-            public:
-                const_iterator(std::unordered_map<std::string, std::string>::const_iterator it) : it(it) {}
-                const std::pair<const std::string, std::string>& operator*() const { return *it; }
-                const std::pair<const std::string, std::string>* operator->() const { return &(*it); }
-                const_iterator& operator++() {++it; return *this; }
-                bool operator!=(const const_iterator& other) const { return it != other.it; }
-        };
+std::unordered_map<std::string, std::string> global_dict = {
 
-        const_iterator begin() const { return const_iterator(exercise_dict.begin()); }
-        const_iterator end() const { return const_iterator(exercise_dict.end()); }
-
-        std::string lookup(const std::string& exercise_name) const;
-
-        // Delete copy constructor and assingment operator to guarantee single instance system wide
-        ExerciseDict(const ExerciseDict&) = delete;
-        ExerciseDict& operator=(const ExerciseDict&) = delete;
-
-        static ExerciseDict& get_instance();
-
-        void set(const std::string& key, const std::string& value);
-         
-        std::string get(const std::string& key) const;
-
-        bool contains(const std::string& key) const; 
-        
-        void remove(const std::string& key);
-
-        void clear(); 
-
-        size_t size() const;
+    {to_lower("Bench Press"), "Barbell Bench Press"},
+    {to_lower("Benchpress"), "Barbell Bench Press"},
+    {to_lower("Benches press"), "Barbell Bench Press"},
+    {to_lower("Dumbbell Bench Press"), "Dumbbell Bench Press"},
+    {to_lower("Kurzhantel bench press"), "Dumbbell Bench Press"},
+    {to_lower("Dumbbell Incline Bench Press"), "Dumbbell Incline Bench Press"},
+    {to_lower("Incline bench press"), "Dumbbell Incline Bench Press"},
+    {to_lower("Incline dumbbell bench press"), "Dumbbell Incline Bench Press"},
+    {to_lower("Kabelturm butterfly unten"), "Cable Standing Fly Low to High"},
+    {to_lower("butterfly kabelturm unten"), "Cable Standing Fly Low to High"},
+    {to_lower("kabelzug unten"), "Cable Standing Fly Low to High"},
+    {to_lower("Kabelzug butterfly unten"), "Cable Standing Fly Low to High"},
+    {to_lower("Cable fly low to high"), "Cable Standing Fly Low to High"},
+    {to_lower("Kabelturm butterfly oben"), "Cable Standing Fly High to Low"},
+    {to_lower("butterfly kabelturm oben"), "Cable Standing Fly High to Low"},
+    {to_lower("kabelzug oben"), "Cable Standing Fly High to Low"},
+    {to_lower("Kabelzug butterfly oben"), "Cable Standing Fly High to Low"},
+    {to_lower("Butterlfy kabelturm oben"), "Cable Standing Fly High to Low"},
+    {to_lower("Cable fly high to low"), "Cable Standing Fly High to Low"},
+    {to_lower("Butterfly machine"), "Lever Seated Fly"},
+    {to_lower("Butterlfy machine"), "Lever Seated Fly"},
+    {to_lower("Butterfly"), "Lever Seated Fly"},
+    {to_lower("Leg press"), "Leg Press"},
+    {to_lower("Squat"), "Barbell Squat"},
+    {to_lower("Split squat"), "Dumbbell Split Squat"},
+    {to_lower("Folter maschine"), "Lever Incline Fly"},
+    {to_lower("Foltermaschine"), "Lever Incline Fly"},
+    {to_lower("Military press"), "Military Press"},
+    {to_lower("Dumbbell Overhead Press"), "Dumbbell Shoulder Press"},
+    {to_lower("overhead dumbbell press"), "Dumbbell Shoulder Press"},
+    {to_lower("Dumbbell overhead press"), "Dumbbell Shoulder Press"},
+    {to_lower("Overhead press dumbbell"), "Dumbbell Shoulder Press"},
+    {to_lower("Dumbbell shoulder press"), "Dumbbell Shoulder Press"},
+    {to_lower("Single arm cable lateral raise"), "Cable One Arm Lateral Raise"},
+    {to_lower("Einarmig seitheben"), "Cable One Arm Lateral Raise"},
+    {to_lower("Kabelturm seitheben"), "Cable Lateral Raise"},
+    {to_lower("Kabel seitheben überkreuzt"), "Cable Lateral Raise"},
+    {to_lower("Overhead press machine"), "Lever Shoulder Press"},
+    {to_lower("Overhead press"), "Lever Shoulder Press"},
+    {to_lower("Shoulder press machine"), "Lever Shoulder Press"},
+    {to_lower("Dumbbell seitheben"), "Dumbbell Lateral Raise"},
+    {to_lower("Seitheben"), "Dumbbell Lateral Raise"},
+    {to_lower("Skullcrusher"), "Skullcrusher"},
+    {to_lower("Skull crusher"), "Skullcrusher"},
+    {to_lower("Kabel kickback"), "Cable One Arm Kickback"},
+    {to_lower("Kabelturm kickback"), "Cable One Arm Kickback"},
+    {to_lower("Kabelzug kick back"), "Cable One Arm Kickback"},
+    {to_lower("Kabelturm kickbacks"), "Cable One Arm Kickback"},
+    {to_lower("Kabelzug pull down"), "Cable Pushdown"},
+    {to_lower("Kabelturm pull down"), "Cable Pushdown"},
+    {to_lower("Seated incline curls"), "Dumbbell Incline Curl"},
+    {to_lower("Bicep incline bench curls"), "Dumbbell Incline Curl"},
+    {to_lower("Incline seated curl"), "Dumbbell Incline Curl"},
+    {to_lower("Bicep incline bench curl"), "Dumbbell Incline Curl"},
+    {to_lower("Incline biceps curl"), "Dumbbell Incline Curl"},
+    {to_lower("Preacher curls"), "Preacher Curl"},
+    {to_lower("Preacher curl machine"), "Preacher Curl"},
+    {to_lower("Single arm preacher curls"), "Dumbbell Preacher Curl"},
+    {to_lower("Single arm preacher curl"), "Dumbbell Preacher Curl"},
+    {to_lower("Pull ups"), "Pull Up"},
+    {to_lower("Klimmzug"), "Pull Up"},
+    {to_lower("Pull up"), "Pull Up"},
+    {to_lower("Band assisted pull up"), "Band Assisted Pull Up"},
+    {to_lower("Pullover"), "Lever Pullover"},
+    {to_lower("Pull over machine"), "Lever Pullover"},
+    {to_lower("Pullover machine"), "Lever Pullover"},
+    {to_lower("Überzugmaschine"), "Lever Pullover"},
+    {to_lower("Negative pull up"), "Negative Pull Ups"},
+    {to_lower("Negative pull ups"), "Negative Pull Ups"},
+    {to_lower("Negativ klimmzug"), "Negative Pull Ups"}, 
+    {to_lower("negative Pull up"), "Negative Pull Ups"},
+    {to_lower("negative pull up"), "Negative Pull Ups"},
+    {to_lower("Deadlifts"), "Deadlift"},
+    {to_lower("Dead lift"), "Deadlift"},
+    {to_lower("Deadlift"), "Deadlift"},
+    {to_lower("Lat pull down"), "Cable Pulldown"},
+    {to_lower("latzug"), "Cable Pulldown"},
+    {to_lower("Lat pulldown"), "Cable Pulldown"},
+    {to_lower("Rudern kabelturm breiter griff"), "Cable Wide Grip Seated Row"},
+    {to_lower("Cable row wide grip"), "Cable Wide Grip Seated Row"},
+    {to_lower("Kabelturm rudern mittelbreit"), "Cable Wide Grip Seated Row"},
+    {to_lower("Kabelturm wide row"), "Cable Wide Grip Seated Row"},
+    {to_lower("Kabelturm rudern breit"), "Cable Wide Grip Seated Row"},
+    {to_lower("Kabelturm rudern"), "Cable Seated Row"},
+    {to_lower("rudern aufrecht"), "Cable Seated Row"},
+    {to_lower("Ruder kabelturm"), "Cable Seated Row"},
+    {to_lower("Rev butterfly"), "Reverse Fly"},
+    {to_lower("hang"), "Hang"},
+    {to_lower("Rotator cuff"), "Rotator Cuff"},
+    {to_lower("dumbbell bent over row"), "Dumbbell Bent-Over Row"},
+    {to_lower("bent over row"), "Dumbbell Bent-Over Row"},
+    {to_lower("Bent over dumbbell row"), "Dumbbell Bent-Over Row"},
+    {to_lower("Adduction"), "Lever Seated Hip Adduction"},
+    {to_lower("Adductor"), "Lever Seated Hip Adduction"},
+    {to_lower("Adduktor"), "Lever Seated Hip Adduction"},
+    {to_lower("Bench butterfly"), "Dumbbell Fly"},
+    {to_lower("Weighted shrug"), "Wheighted Shrug"},
+    {to_lower("ß Stange"), "Barbell Curl"},
+    {to_lower("ẞ-Stange curls"), "Barbell Curl"},
+    {to_lower("ẞ-Stange"), "Barbell Curl"},
+    {to_lower("Hammer Curls"), "Hammer Curl"},
+    {to_lower("Hammer curl"), "Hammer Curl"},
+    {to_lower("bein beuger"), "Leg Curl"},
+    {to_lower("beuger"), "Leg Curl"},
+    {to_lower("bein strecker"), "Leg Extension"},
+    {to_lower("leg extension"), "Leg Extension"},
+    {to_lower("Strecker"), "Leg Extension"},
+    {to_lower("abduktor maschine"), "Lever Seated Hip Abduction"},
+    {to_lower("tbar lat pull"), "Lever Incline Row"},
+    {to_lower("Ruder maschine"), "Lever Wide Grip Seated Row"},
+    {to_lower("Rudern maschine"), "Lever Wide Grip Seated Row"},
+    {to_lower("lat row machine"), "Lever Wide Grip Seated Row"},
+    {to_lower("Machine row"), "Lever Wide Grip Seated Row"},
+    {to_lower("front lift"), "Barbell Front Raise"},
+    {to_lower("Front raise"), "Barbell Front Raise"},
+    {to_lower("kurzhantel curl"), "Dumbbell Curl"},
+    {to_lower("Dumbbell curl"), "Dumbbell Curl"},
+    {to_lower("Curl/hammer curl"), "Dumbbell Curl"},
+    {to_lower("Dumbbell curls"), "Dumbbell Curl"},
+    {to_lower("Kabelzug curls"), "Cable Curl"},
+    {to_lower("Kabelturm curl"), "Cable Curl"},
+    {to_lower("Kabelturm curls"), "Cable Curl"},
+    {to_lower("Kabelzug overhead"), "Cable Bent-over Triceps Extension"},
 };
+
 
 #endif // EXERCISE_DICT_H

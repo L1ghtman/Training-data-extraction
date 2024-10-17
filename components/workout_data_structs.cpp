@@ -16,10 +16,18 @@ Set::Set(RepVal reps,
         drop_weight(drop_weight),
         time(time) {} 
 
-// Exercise::Exercise(
-//     std::string name,
-//     std::vector<Set> sets,
-//     std::string notes):
-//     name(name),
-//     sets(sets),
-//     notes(notes) {}
+Exercise::Exercise(
+        const std::string& name, 
+        std::vector<Set> sets, 
+        const std::string& notes): 
+        name(name), 
+        sets(std::move(sets)), 
+        notes(notes) {}
+
+Workout::Workout(
+        const std::vector<Exercise> exercises,
+        const std::string& date,
+        const std::string& name):
+        exercises(exercises),
+        date(date),
+        name(name) {}

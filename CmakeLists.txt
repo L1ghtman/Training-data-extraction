@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(gym_tracking)
+project(GymTacker)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -11,7 +11,13 @@ add_executable(GymTracker
                 components/workout_data_structs.cpp
 )
 
+find_package(SQLite3 REQUIRED)
+target_link_libraries(GymTracker PRIVATE SQLite::SQLite3)
 
 target_include_directories(GymTracker PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/components
 )
+
+message(STATUS "Source directory: ${CMAKE_SOURCE_DIR}")
+message(STATUS "helpers.cpp path ${CMAKE_SOURCE_DIR}/components/helpers.cpp")
+message(STATUS "workout_data_structs.cpp path: ${CMAKE_SOURCE_DIR}/components/workout_data_structs.cpp")

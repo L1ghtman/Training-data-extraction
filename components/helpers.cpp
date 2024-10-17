@@ -27,7 +27,7 @@ bool has_digit(const std::string& string) {
     return false;
 }
 
-StringVector split_string(std::string& string, char delimiter) {
+StringVector split_string(std::string& string, char& delimiter) {
     std::stringstream ss(string);
     std::string segment;
     StringVector seglist;
@@ -70,8 +70,9 @@ Set get_set(std::string& string) {
     if (contains_char(string, 's')) {
         return Set::withTime(string);
     }
-    
-    StringVector set = split_string(string, 'x');
+
+    char delim_c = 'x'; 
+    StringVector set = split_string(string, delim_c);
     
     if (set.size() == 1) {
         set.push_back("0");
@@ -89,15 +90,19 @@ Set get_set(std::string& string) {
     if (contains_char(set[0], '.') && contains_char(set[1], '.')) {
         return Set::normal_set(std::stof(set[0]), std::stof(set[1]));
     }
+
+    return Set::normal_set(std::stof(set[0]), std::stof(set[1]));
 }
 
 Set get_drop_set(std::string& string) {
     string.pop_back();
-    StringVector sets = split_string(string, '+');
+    char delim_c = '+';
+    StringVector sets = split_string(string, delim_c);
     RVVector reps = RVVector();
     DoubleVector weights = DoubleVector();
     for (auto& s : sets) {
-        StringVector set_data = split_string(s, 'x');
+        char delim = 'x';
+        StringVector set_data = split_string(s, delim);
         if (contains_char(set_data[0], '.')) {
             reps.push_back(std::stof(set_data[0]));
             weights.push_back(std::stof(set_data[1]));
@@ -201,17 +206,17 @@ StringVector make_unique(StringVector vector) {
     return vector;
 }
 
-StringVector check_dict_completeness(std::vector<Workout> workout_list) {
-    StringVector exercise_name_list = make_unique(get_exercise_names(workout_list));
-    ExerciseDict& exercise_dict = ExerciseDict::get_instance();
-    StringVector missing_exercises = StringVector();
-    for (auto name : exercise_name_list) {
-        if (!exercise_dict.contains(name)) {
-            missing_exercises.push_back(name);
-        }
-    }
-    return missing_exercises;
-}
+// StringVector check_dict_completeness(std::vector<Workout> workout_list) {
+//     StringVector exercise_name_list = make_unique(get_exercise_names(workout_list));
+//     ExerciseDict& exercise_dict = ExerciseDict::get_instance();
+//     StringVector missing_exercises = StringVector();
+//     for (auto name : exercise_name_list) {
+//         if (!exercise_dict.contains(name)) {
+//             missing_exercises.push_back(name);
+//         }
+//     }
+//     return missing_exercises;
+// }
 
 // Compare the exercise names of the internal dictonary with the external source of official names. Currently this is a csv file, but will be upgraded to separate database.
 StringVector comp_extDb_to_exDict(const std::string& filename) {
@@ -238,9 +243,27 @@ StringVector comp_extDb_to_exDict(const std::string& filename) {
     }
 
     StringVector values;
-    values.reserve(ExerciseDict::get_instance().size());
-    for (const auto& val : ExerciseDict::get_instance()) {
-        values.push_back(val.second());
+    values.reserve(global_dict.size());
+    for (const auto& val : global_dict) {
+        //values.push_back(val.second());
     }
+    return values;
+}
 
+int insert_workout_to_db(Workout workout) {
+    sqlite3 *db;
+    char *zErrMsg = 0;
+    int rc;
+
+    rc = sqlite3_open("workout_data_test.db", &db);
+
+    if (rc) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        return(1);  
+    }
+    else {
+        fprintf(stderr, "Opened database successfully\n");
+    }
+    sqlite3_close(db);
+    return(0);
 }
